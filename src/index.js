@@ -1,4 +1,6 @@
 //npm joi
+//password hashing in model or schema
+
 
 const express = require("express");
 const dotenv = require("dotenv");

@@ -1,14 +1,18 @@
 const express = require("express");
+const { createUser } = require("../controller/user.controller");
 
 const router = express.Router();
 
-
-router.route("/user")
-.get((req, res)=>{
-    res.send("Users");
+router.get('',(req, res)=>{
+    res.send('Okay');
 })
-.post((req, res)=>{
-    res.send("Users");
+
+router.post('/signup',
+    createUser
+);
+
+router.post('/login',(req, res)=>{
+    res.send("login");
 });
 // router.route("/:id").delete().patch();
 
