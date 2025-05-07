@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log("Database Connected");
     new Promise((resolve)=>{
         app.listen(port, ()=>{
-            console.log('Server is listening');
+            console.log(`Server is listening to the port ${port}`);
             resolve();
         })
     })

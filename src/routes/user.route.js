@@ -1,19 +1,24 @@
 const express = require("express");
-const { createUser } = require("../controller/user.controller");
+const { createUser, deleteUser, authenticateUser, updateUser } = require("../controller/user.controller");
 
 const router = express.Router();
 
-router.get('',(req, res)=>{
-    res.send('Okay');
-})
 
 router.post('/signup',
     createUser
 );
 
-router.post('/login',(req, res)=>{
-    res.send("login");
-});
+router.post('/login',
+    authenticateUser
+);
+
+router.put('/update',
+    updateUser
+)
+
+router.delete('/delete',
+    deleteUser
+);
 // router.route("/:id").delete().patch();
 
 
