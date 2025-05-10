@@ -1,8 +1,10 @@
 //npm joi
 //password hashing in model or schema
+//next()
+//why need bearer(stateful ko lagi)
+//npm passport(to authentication token)
 
 
-const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const app = require("./app");

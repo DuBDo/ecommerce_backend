@@ -17,6 +17,49 @@ const schema = Joi.object({
     role: Joi.string().valid('buyer', 'seller')
 });
 
+const loginSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required()
+})
+
+const getUsers = async(req, res, next)=>{
+    try{
+        const users = await User.find({},{password:0});
+        
+        res.status(200).send(users);
+    }catch (error) {
+        res.status(500).send({message: error.message});
+    }
+}
+
+const login = async(req, res, next)=>{
+    try {
+        const {error, value} = loginSchema.validate(req.body);
+
+        if(!error){
+            let user = await User.findOne({email: value.email});
+
+            console.log(user);
+            user = {...user.toObject()};
+            console.log(user);
+            if(!user){
+                res.status(403).send({message: "User not Found"});
+            }
+            const check = await bcrypt.compare(value.password, user.password);
+            if(!check){
+                res.status(401).send({message: "Worng Credential"});
+            }
+
+            delete user.password;
+
+            const token = jwt.sign(user, process.env.TOKEN_SECRET_KEY);
+            res.status(200).send({token})
+            
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 const authenticateUser = async(req, res, next)=>{
     try{
@@ -85,7 +128,7 @@ const deleteUser = async(req, res, next)=>{
         const header = req.headers.authorization;
         const token = header.split(' ')[1];
 
-        const data = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
+        const data =jwt.verify(token, process.env.TOKEN_SECRET_KEY);
 
         console.log(data);
         
@@ -101,7 +144,9 @@ const deleteUser = async(req, res, next)=>{
     }
 }
 module.exports = {
+    getUsers,
     createUser,
+    login,
     authenticateUser,
     deleteUser,
     updateUser
