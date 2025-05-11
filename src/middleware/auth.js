@@ -30,7 +30,8 @@ const isBuyer = (req, res, next)=>{
         next();
     }
     else{
-        res.send(403).send({message: "Forbidden!!"});
+        console.log(req.user.role);
+        res.status(403).send({message: "Forbidden!!"});
     }
 }
 

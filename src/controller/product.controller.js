@@ -22,17 +22,20 @@ const getProducts = async (req, res, next)=>{
 
 const createProduct = async (req, res, next)=>{
     try{
+        req.body.createdBy = req.user._id;
         const {error, value} = productSchema.validate(req.body, {allowUnknown: true});
 
         if(error){
             res.status(400).send({message:error.message});
+            // throw new Error(error)
         }
 
         await Product.create(value);
 
         res.status(201).send({message:'Product Created'});
-    }catch(error){
+    }catch(err){
         res.status(500).send({message: 'Product Can not be created'});
+        // next(err)
     }
 }
 
